@@ -1,7 +1,6 @@
 import {useRemoteState} from 'hooks/remote';
-import {is} from '@babel/types';
 
-const LABELS = [
+export const NOTES = [
   'C',
   'C#',
   'D',
@@ -21,12 +20,11 @@ interface KeysState {
 }
 
 const getKeyDetail = function(keyId: number) {
-  console.log(keyId);
   return {
     key: keyId,
-    note: LABELS[keyId % 12],
+    note: NOTES[keyId % 12],
     oct: Math.ceil((keyId + 1) / 12),
-    vex: LABELS[keyId % 12] + '/' + Math.ceil((keyId + 1) / 12),
+    vex: NOTES[keyId % 12] + '/' + Math.ceil((keyId + 1) / 12),
   };
 };
 
@@ -68,7 +66,7 @@ const CHORDS_CONFIG = [
 ];
 
 const CHORDS = {};
-LABELS.forEach((base, index) => {
+NOTES.forEach((base, index) => {
   CHORDS_CONFIG.forEach(chord => {
     for (
       let startingStep = 0;
@@ -78,7 +76,7 @@ LABELS.forEach((base, index) => {
       const notes = [];
       for (let i = 0; i < chord.steps.length; i++) {
         notes.push(
-          LABELS[
+          NOTES[
             (index + chord.steps[(startingStep + i) % chord.steps.length]) % 12
           ],
         );
@@ -94,16 +92,19 @@ LABELS.forEach((base, index) => {
     }
   });
 });
-console.log(CHORDS);
+
 const getChord = (ids: number[]) => {
   const unique = Array.from(new Set(ids.map(i => i % 12)))
-    .map(id => LABELS[id])
+    .map(id => NOTES[id])
     .join();
   return CHORDS[unique];
 };
+
 export default function usePianoKeys() {
   const remoteKeys = useRemoteState<KeysState>('keys', {});
-  const map = {};
+  const map: {
+    [id: number]: boolean;
+  } = {};
   const ids = [];
   const keys = Object.keys(remoteKeys).map(i => {
     map[~~i] = true;
@@ -111,5 +112,6 @@ export default function usePianoKeys() {
     return getKeyDetail(~~i);
   });
   const chord = getChord(ids);
+
   return {keys, map, ids, chord};
 }

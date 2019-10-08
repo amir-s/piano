@@ -1,12 +1,12 @@
 import React from 'react';
 import {RemoteWrapper} from 'hooks/remote';
 import './App.css';
-import Piano from 'components/Piano';
+import Main from 'pages/Main';
 
 const App = () => {
   return (
     <RemoteWrapper>
-      <Piano />
+      <Main />
     </RemoteWrapper>
   );
 };
