@@ -32,50 +32,72 @@ const getKeyDetail = function(keyId: number) {
 
 const CHORDS_CONFIG = [
   {
-    label: 'Major',
-    steps: [4, 7],
+    label: 'major',
+    steps: [0, 4, 7],
   },
   {
-    label: 'Minor',
-    steps: [3, 7],
+    label: 'minor',
+    steps: [0, 3, 7],
   },
   {
-    label: 'Dim',
-    steps: [3, 6],
+    label: 'dim',
+    steps: [0, 3, 6],
+    rootOnly: true,
   },
   {
-    label: 'Aug',
-    steps: [4, 8],
+    label: 'aug',
+    steps: [0, 4, 8],
+    rootOnly: true,
   },
   {
-    label: 'Major 7',
-    steps: [4, 7, 10],
+    label: '7',
+    steps: [0, 4, 7, 10],
   },
   {
-    label: 'Minor 7',
-    steps: [3, 7, 10],
+    label: 'minor 7',
+    steps: [0, 3, 7, 10],
+  },
+  {
+    label: 'maj7',
+    steps: [0, 4, 7, 11],
+  },
+  {
+    label: 'minor maj7',
+    steps: [0, 3, 7, 11],
   },
 ];
 
 const CHORDS = {};
 LABELS.forEach((base, index) => {
   CHORDS_CONFIG.forEach(chord => {
-    const notes = chord.steps.map(i => (index + i) % 12);
-    notes.unshift(index % 12);
-    const sig = notes.sort((a, b) => a - b).join();
-    // if (CHORDS[sig]) {
-    //   console.log('Clash', base, chord.label, '<>', CHORDS[sig]);
-    // }
-    CHORDS[sig] = {
-      base,
-      type: chord.label,
-    };
+    for (
+      let startingStep = 0;
+      startingStep < chord.steps.length;
+      startingStep++
+    ) {
+      const notes = [];
+      for (let i = 0; i < chord.steps.length; i++) {
+        notes.push(
+          LABELS[
+            (index + chord.steps[(startingStep + i) % chord.steps.length]) % 12
+          ],
+        );
+      }
+      if (CHORDS[notes.join()]) {
+        console.log('CLASH', chord.label, CHORDS[notes.join()].type);
+      }
+      CHORDS[notes.join()] = {
+        base,
+        type: chord.label,
+      };
+      if (chord.rootOnly) break;
+    }
   });
 });
 console.log(CHORDS);
 const getChord = (ids: number[]) => {
   const unique = Array.from(new Set(ids.map(i => i % 12)))
-    .sort((a, b) => a - b)
+    .map(id => LABELS[id])
     .join();
   return CHORDS[unique];
 };
