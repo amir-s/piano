@@ -1,9 +1,10 @@
 import React from 'react';
 import usePianoKeys from 'hooks/usePianoKeys';
 import Piano from 'components/Piano';
+import Abc from 'components/Abc';
 
 export default function Main() {
-  const {map, chord} = usePianoKeys();
+  const {keys, map, chord} = usePianoKeys();
 
   return (
     <>
@@ -16,7 +17,8 @@ export default function Main() {
           )}
         </h2>
       </div>
-      <Piano pressed={map} start={1} octaves={6} showNotes={true} />
+      <Piano pressed={map} start={1} octaves={5} showNotes={true} />
+      <Abc keys={keys} />
     </>
   );
 }

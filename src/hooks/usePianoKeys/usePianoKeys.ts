@@ -23,8 +23,9 @@ const getKeyDetail = function(keyId: number) {
   return {
     key: keyId,
     note: NOTES[keyId % 12],
+    noteName: NOTES[keyId % 12].substr(0, 1),
     oct: Math.ceil((keyId + 1) / 12),
-    vex: NOTES[keyId % 12] + '/' + Math.ceil((keyId + 1) / 12),
+    isSharp: [1, 3, 6, 8, 10].includes(keyId % 12),
   };
 };
 
