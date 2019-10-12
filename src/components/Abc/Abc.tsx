@@ -33,7 +33,6 @@ const getAbcNotation = note => {
 
 export default function Abc({keys}) {
   const divRef = createRef<HTMLDivElement>();
-  console.log(keys);
   useEffect(() => {
     if (!divRef.current) return;
     const abcString = 'M:C\n    [' + keys.map(getAbcNotation).join('') + ']';

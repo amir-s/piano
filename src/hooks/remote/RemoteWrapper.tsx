@@ -1,16 +1,30 @@
 import React from 'react';
 
-const socket = new WebSocket('ws://pi.local:8080');
+let socket;
 
 const handlers = {};
-socket.onmessage = event => {
-  const payload = JSON.parse(event.data);
-  if (!handlers[payload.name]) return;
-  handlers[payload.name].forEach(fn => {
-    fn(payload.data);
-  });
+const connect = () => {
+  console.log('connectring');
+  // socket = new WebSocket('ws://localhost:8080');
+  socket = new WebSocket('wss://piano.lan:8080');
+  socket.onmessage = event => {
+    const payload = JSON.parse(event.data);
+    if (!handlers[payload.name]) return;
+    handlers[payload.name].forEach(fn => {
+      fn(payload.data);
+    });
+  };
+
+  socket.onclose = e => {
+    console.log('connection closed');
+    setTimeout(connect, 1000);
+  };
+  socket.onerror = e => {
+    console.log('connection errored');
+  };
 };
 
+connect();
 const wrappedSocket = {
   socket,
   on: (name, handler) => {
