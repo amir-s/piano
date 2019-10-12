@@ -18,7 +18,8 @@
     "start": "concurrently \"npm:react\" \"npm:server\"",
     "server": "nodemon server.js",
     "react": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "deploy": "yarn build && gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -37,6 +38,7 @@
   },
   "devDependencies": {
     "concurrently": "^4.1.2",
+    "gh-pages": "^2.1.1",
     "nodemon": "^1.19.3"
   }
 }
