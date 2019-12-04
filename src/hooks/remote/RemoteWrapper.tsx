@@ -4,9 +4,9 @@ let socket;
 
 const handlers = {};
 const connect = () => {
-  console.log('connectring');
-  // socket = new WebSocket('ws://localhost:8080');
-  socket = new WebSocket('wss://piano.lan:8080');
+  console.log('connecting');
+  socket = new WebSocket('ws://localhost:8080');
+  // socket = new WebSocket('wss://piano.lan:8080');
   socket.onmessage = event => {
     const payload = JSON.parse(event.data);
     if (!handlers[payload.name]) return;

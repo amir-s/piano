@@ -2,18 +2,12 @@ const fs = require('fs');
 const midi = require('midi');
 
 const WebSocket = require('ws');
-const https = require('https');
+const http = require('http');
 
-const server = https.createServer(
-  {
-    cert: fs.readFileSync('./cert.pem'),
-    key: fs.readFileSync('./key.pem'),
-  },
-  function(req, res) {
-    res.writeHead(200);
-    res.end('hello world\n');
-  },
-);
+const server = http.createServer(function(req, res) {
+  res.writeHead(200);
+  res.end('hello world\n');
+});
 
 const wss = new WebSocket.Server({server});
 
