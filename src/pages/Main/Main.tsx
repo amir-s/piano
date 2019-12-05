@@ -2,6 +2,7 @@ import React from 'react';
 import usePianoKeys from 'hooks/usePianoKeys';
 import Piano from 'components/Piano';
 import Abc from 'components/Abc';
+import SoundPlayer from 'components/SoundPlayer';
 
 export default function Main() {
   const {keys, map, chord} = usePianoKeys();
@@ -19,6 +20,7 @@ export default function Main() {
       </div>
       <Piano pressed={map} start={1} octaves={5} showNotes={true} />
       <Abc keys={keys} />
+      <SoundPlayer keys={keys} />
     </>
   );
 }

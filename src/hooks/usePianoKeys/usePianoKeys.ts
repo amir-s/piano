@@ -26,6 +26,7 @@ const getKeyDetail = function(keyId: number) {
     noteName: NOTES[keyId % 12].substr(0, 1),
     oct: Math.ceil((keyId + 1) / 12),
     isSharp: [1, 3, 6, 8, 10].includes(keyId % 12),
+    name: NOTES[keyId % 12] + Math.ceil((keyId + 1) / 12)
   };
 };
 
@@ -93,7 +94,7 @@ NOTES.forEach((base, index) => {
     }
   });
 });
-
+console.log(CHORDS);
 const getChord = (ids: number[]) => {
   const unique = Array.from(new Set(ids.map(i => i % 12)))
     .map(id => NOTES[id])
@@ -103,6 +104,7 @@ const getChord = (ids: number[]) => {
 
 export default function usePianoKeys() {
   const remoteKeys = useRemoteState<KeysState>('keys', {});
+  
   const map: {
     [id: number]: boolean;
   } = {};
@@ -113,6 +115,6 @@ export default function usePianoKeys() {
     return getKeyDetail(~~i);
   });
   const chord = getChord(ids);
-
+  console.log({keys, map, ids, chord});
   return {keys, map, ids, chord};
 }
